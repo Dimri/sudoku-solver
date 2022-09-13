@@ -1,0 +1,96 @@
+body {
+    background-color: #212121;
+    color: white
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+}
+
+.game-container {
+    position      : relative;
+    box-sizing    : border-box;
+  
+    height        : 500px;
+    width         : 500px;
+    margin-top    : 40px;
+    padding       : 15px;
+  
+    cursor        : default;
+    background    : #bbada0;
+    border-radius : 6px;
+}
+
+.grid-container {
+    position : absolute;
+    z-index  : 1;
+}
+
+.grid-row {
+    margin-bottom : 3px;
+}
+
+.grid-row:nth-child(3n+3) {
+    margin-bottom : 10px;
+}
+
+.grid-row:last-child {
+    margin-bottom : 0;
+}
+
+.grid-row:after {
+    content : "";
+
+    display : block;
+    clear   : both;
+}
+
+.grid-col {
+    float         : left;
+    height        : 48px;
+    width         : 48px;
+    margin-right  : 4px;
+    padding       : 0;
+    background    : rgba(238, 228, 218, 0.35);
+    border-radius : 3px;
+  }
+  
+.grid-col:nth-child(3n+3) {
+    margin-right : 7px;
+}
+
+.grid-col:last-child {
+    margin-right : 0;
+}
+
+input[type=text]{
+    height           : 48px;
+    width            : 48px;
+    padding          : 0;
+  
+    background-color : transparent;
+    font-size        : 30px;
+    color            : white;
+    text-align       : center;
+    border           : 0;
+    outline          : none;
+  
+    font-weight      : bold;
+    -moz-appearance  : textfield;
+}
+
+input::-webkit-input-placeholder{
+    opacity: 0.5;
+}
+
+.button-container {
+position      : relative;
+
+margin-top    : 40px;
+margin-bottom : 100px;
+}
+
+.button-container > * {
+margin-bottom : 20px;
+}
