@@ -1,12 +1,12 @@
 from sudoku import app
 from .sudoku import Sudoku
-from flask import render_template, request, url_for
+from flask import render_template, request, redirect, url_for
 
 NUM_OF_CELLS = 81
 
 @app.route('/')
 def home_page():
-    return render_template('index.html')
+    return render_template('index2.html')
 
 
 @app.route('/solution', methods=['POST'])
