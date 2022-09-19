@@ -1,5 +1,6 @@
 import re
-from tracemalloc import start
+
+NROWS = 9
 
 class InvalidInputError(Exception):
     pass
@@ -7,16 +8,17 @@ class InvalidInputError(Exception):
 class Sudoku:
 
     def __init__(self, board):
-        self._NROWS = 9
-        self._NCOLS = 9
-
-        if self.valid(board):
+        self.ROWS = NROWS
+        self.COLS = NROWS
+        self.solvals = set()
+        self.addvals = set()
+        if self.valid_board(board):
             self.board = board
         else:
             raise InvalidInputError(f'Given input is not a valid input!')
 
-    def valid(self, board):
-        pattern = r'^[0-9\.]$'
+    def valid_board(self, board):
+        pattern = r'^[0-9]$'
         for rows in board:
             for elem in rows:
                 if not re.match(pattern, elem):
@@ -24,87 +26,95 @@ class Sudoku:
 
         return True
 
-
-    def check_row_repeat(self, r : int, c : int) -> bool:
-        '''
-            function to check if target value repeats in row
-            r : target row index
-            c : target col index
-
-            returns 'True' if target repeats else 'False'
-        '''
-        target = self.board[r][c]
-
-        for i in range(self._NROWS):
-            # if row is same as target row
-            if i == r:
-                continue
-
-            # check for target
-            if self.board[i][c] == target:
-                return True
+    def is_valid(self, target : str, pos : tuple) -> bool:
         
-        return False
-
-
-    def check_col_repeat(self, r : int, c : int) -> bool:
-        '''
-            function to check if target value repeats in col
-            r : target row index
-            c : target col index
-
-            returns 'True' if target repeats else 'False'
-        '''
-        target = self.board[r][c]
-
-        for j in range(self._NCOLS):
-            # if column is same as target column
-            if j == c:
-                continue
-
-            # check for target
-            if self.board[r][j] == target:
-                return True
+        # check row 
+        for i in range(self.COLS):
+            if self.board[pos[0]][i] == target and pos[1] != i:
+                return False
         
+        # check col
+        for i in range(self.ROWS):
+            if self.board[i][pos[1]] == target and pos[0] != i:
+                return False
+
+        # check block
+        block_x = pos[0] // 3
+        block_y = pos[1] // 3
+
+        for i in range(block_x * 3, block_x*3 + 3):
+            for j in range(block_y * 3, block_y * 3 + 3):
+                if self.board[i][j] == target and (i, j) != pos:
+                    return False
+        
+        return True
+
+    def is_valid_solution(self) -> bool:
+        for i in range(self.ROWS):
+            for j in range(self.COLS):
+                target = self.board[i][j]
+                pos = (i,j)
+                if not self.is_valid(target, pos):
+                    return False
+    
+        return True
+    
+    def solve(self) -> bool:
+        empty_cell = self.find_empty()
+
+        if not empty_cell:
+            return True
+        else:
+            row, col = empty_cell
+
+        for i in range(1, self.ROWS + 1):
+
+            if self.is_valid(str(i), empty_cell):
+                self.board[row][col] = str(i)
+                self.solvals.add((row,col))
+                if self.solve():
+                    return True
+
+                self.board[row][col] = '0'
+                self.solvals.remove((row,col))
+
         return False
 
     
-    def check_block_repeat(self, r : int, c : int) -> bool:
+    def find_empty(self):
         '''
-            function to check if target value repeats in the block
-            r : target row index
-            c : target col index
-
-            returns 'True' if target repeats else 'False'
+        function to find the first empty cell
         '''
-        target = self.board[r][c]
+        for i in range(self.ROWS):
+            for j in range(self.COLS):
+                if self.board[i][j] == '0':
+                    return (i,j)
 
-        # starting indices of block
-        start_x = (r // 3) * 3
-        start_y = (c // 3) * 3
+        # if the board is full
+        return None
 
-        for i in range(start_x, start_x + 3):
-            for j in range(start_y, start_y + 3):
-                # if current element indices is same as target indices
-                if i == r and j == c:
-                    continue
+    def print_board(self):
+        print('\n'*2)        
+        for i, row in enumerate(self.board):
+            if i % 3 == 0:
+                print('-'*22)
+            for j, col in enumerate(row):
+                if j % 3 == 0:
+                    print('|', end='')
+                print(col, end=' ')
+            print('|')
+        print('\n'*2)        
 
-                # check for target
-                if self.board[i][j] == target:
-                    return True
+    def add(self, data):
+        '''
+        function to add user inserted data to board
+        '''
+        for key, value in data.items():
+            if key in ['solve-btn', 'clear-btn']:
+                break
+            idx = int(key.split('-')[1])
 
-        return False
-
-
-    def valid_solution(self):
-        
-        for i in range(self._NROWS):
-            for j in range(self._NCOLS):
-                if self.board[i][j] == '.':
-                    continue
-
-                # if any of the following is true, solution is not valid    
-                if self.check_block_repeat(i,j) or self.check_col_repeat(i,j) or self.check_row_repeat(i,j):
-                    return False
-
-        return True
+            rowidx = idx // self.ROWS
+            colidx = idx % self.ROWS
+            self.board[rowidx][colidx] = value 
+            self.addvals.add((rowidx, colidx))
