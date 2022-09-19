@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    Sudoku
+{% endblock %}
+
+
+{% block content %} 
+<div class="game-container center">
+    <div class="grid-container">
+        <form action="{{ url_for('solution_page') }}" method="post" name="sudoku-input">
+            <table>
+                    <colgroup><col><col><col></colgroup>
+                    <colgroup><col><col><col></colgroup>
+                    <colgroup><col><col><col></colgroup>
+                    {% for i in range(9) %}
+                    <tr>
+                    {% if i % 3 == 0 %} 
+                    <tbody>
+                    {% endif %}
+                        {% for j in range(9) %} 
+                        <td>
+                            {% if (i,j) in vals %}
+                            <input type="text" class="green" disabled="disabled" maxlength="1" name="cell-{{ i * 9 + j }}" autocomplete="off" 
+                                value = "{{ board[i][j] }}">
+                            {% else %}
+                            <input type="text" disabled="disabled" maxlength="1" name="cell-{{ i * 9 + j }}" autocomplete="off" 
+                                value = "{{ board[i][j] }}">
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+            </table>
+            <div class="button-container">
+                <input name="solve-btn" type="submit" value="Solve" class="btn btn-primary btn-block">
+                <input name="clear-btn" type="submit" value="Clear" class="btn btn-secondary btn-block">
+            </div>
+            </form>
+    </div>
+</div>
+{% endblock %}
