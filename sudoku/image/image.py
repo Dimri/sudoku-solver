@@ -14,7 +14,7 @@ model = utils.prediction_model()
 img = cv2.imread('../sudoku_unsolved.png')
 img = cv2.resize(img, (WIDTH_IMG, HEIGHT_IMG))
 imgBlank = np.zeros(img.shape, np.uint8)
-imgThreshold = utils.preProcess(img)
+imgThreshold = utils.preProcess(img)    
 
 
 #### FIND THE CONTOURS

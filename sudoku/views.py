@@ -3,7 +3,6 @@ from .sudoku import Sudoku, NROWS
 from flask import render_template, request, flash, redirect, url_for
 from sudoku import puzzles
 
-
 SIZE = NROWS
 CURRENT_PUZZLE = puzzles.PUZZLES['2']
 
