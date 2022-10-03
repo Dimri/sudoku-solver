@@ -1,3 +1,5 @@
 __pycache__/
 venv/
 sudoku/__pycache__/
+sudoku/image/__pycache__
+sudoku/model/data
