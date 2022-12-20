@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    Upload file
+{% endblock %}
+
+        
+
+{% block content %} 
+<div class="container" style="margin-top : 20px;" >
+  <h1 style="text-align:center ;">Upload image of a sudoku puzzle</h1>
+<form method=post enctype=multipart/form-data>
+  <div class="input-group mb-3" style="margin:10px">
+    <input type="file" class="form-control" name=file>
+    <input type="submit" value=Upload>
+  </div>
+</form>
+</div>
+{% if filename %}
+  <div class="center-img"> 
+  <img src="{{ url_for('display_image', filename=filename) }}" alt="puzzle photo" style="text-align:center; width:450px;">
+  </div>
+  <div class="center-img">
+    <form action="{{ url_for('puzzle_page', filename=filename) }}" method="post">
+    <input name="make-btn" type="submit" value="Make Puzzle" class="btn btn-primary">
+    </form>
+  </div>
+{% endif %}
+{% endblock %}

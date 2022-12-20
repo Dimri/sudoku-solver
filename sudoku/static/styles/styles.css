@@ -94,3 +94,11 @@ margin-bottom : 100px;
 .button-container > * {
 margin-bottom : 20px;
 }
+
+.center-img {
+  min-height: 100px;
+  max-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
