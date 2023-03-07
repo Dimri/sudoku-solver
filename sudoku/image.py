@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import copy
 
-from sudoku import utils
+from sudoku import utils, app
 
 
 WIDTH_IMG = 450
@@ -66,14 +66,16 @@ def digit_matrix(image_path):
 
     # visualize contours in image
     # imgContour = copy.deepcopy(img)
-    # cv2.drawContours(imgContour, contours, -1, (0,255,0), 3)
-    # showimage('contours', imgContour)
+    # cv2.drawContours(imgContour, contours, -1, (0, 255, 0), 3)
+    # utils.showimage("contours", imgContour)
 
     # find biggest contour in the image
     matrix = biggest_contour(contours, imgBigContour)
-
+    # cv2.imwrite(app.config["UPLOAD_FOLDER"] + "big-contour.png", imgBigContour)
+    # utils.showimage("big", imgBigContour)
     # warp the sudoku frame to occupy full img
     imgWarpColored = cv2.warpPerspective(img, matrix, (WIDTH_IMG, HEIGHT_IMG))
+    cv2.imwrite(app.config["UPLOAD_FOLDER"] + "warped-contour.png", imgWarpColored)
     # imgDetectedDigits = imgBlank.copy()
 
     # grayscale it
@@ -82,4 +84,4 @@ def digit_matrix(image_path):
     # get numbers from the image
     numbers = split_image(imgWarpColored)
 
-    return numbers.reshape((9,9))
+    return numbers.reshape((9, 9))

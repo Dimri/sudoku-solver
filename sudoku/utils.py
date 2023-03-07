@@ -1,16 +1,14 @@
 import cv2
 import os
-import pickle  
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 import numpy as np
 from tensorflow import keras
 from keras.models import load_model
 
 
 def prediction_model():
-    with open('sudoku/svm_model.pkl', 'rb') as file:
-        return pickle.load(file) 
-    # return load_model("sudoku/model/trained_model")
+    return load_model("sudoku/model/trained_model")
 
 
 def showimage(title, img):
@@ -92,7 +90,7 @@ def get_prediction(boxes, model):
     """
     function to get numbers array from the sudoku photo
     """
-    THRESHOLD = 0.5
+    THRESHOLD = 0.8
     numbers = []
     # loop over digit images (sudoku box)
     for image in boxes:
@@ -107,12 +105,11 @@ def get_prediction(boxes, model):
 
         # predict the digit
         # predictions = model.predict(img, verbose=0)
-        print(img.shape)
         predictions = model.predict(img)
         class_index = np.argmax(predictions)  # digit
         prob_val = np.amax(predictions)  # probability value
 
-        print(f'{class_index} {prob_val}')
+        print(f"{class_index} {prob_val}")
 
         # if probability is greater than THRESHOLD add class_idx
         # else add 0 (no digit there)

@@ -15,37 +15,39 @@ from werkzeug.utils import secure_filename
 from sudoku.image import digit_matrix
 
 SIZE = NROWS
-PUZZLE = puzzles.PUZZLES["1"]
+PUZZLE = puzzles.PUZZLES["2"]
 
 
 @app.route("/")
 def home_page():
-    digit_matrix(app.config['UPLOAD_FOLDER'] + 's1.png')
+    # digit_matrix(app.config["UPLOAD_FOLDER"] + "s1.png")
     return render_template("index.html", board=stringit(PUZZLE))
+
 
 @app.route("/puzzle/<filename>", methods=["POST"])
 def puzzle_page(filename):
-    PUZZLE = stringit(digit_matrix(app.config['UPLOAD_FOLDER'] + filename)) 
+    PUZZLE = stringit(digit_matrix(app.config["UPLOAD_FOLDER"] + filename))
     return render_template("index.html", board=PUZZLE)
+
 
 @app.route("/solution", methods=["POST"])
 def solution_page():
     # values submitted by user
     data = request.form
-    print(data)
     # pressed 'solve'
     if "solve-btn" in data:
         return solve(data)
 
     # pressed 'clear'
     elif "clear-btn" in data:
+        print("clear button pressed")
         return redirect(url_for("home_page"))
 
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload_page():
     if request.method != "POST":
-        return render_template('uploadfile.html')
+        return render_template("uploadfile.html")
 
     # check if the post request has the file part
     if "file" not in request.files:
@@ -53,7 +55,7 @@ def upload_page():
         return redirect(url_for("upload_page"))
 
     file = request.files["file"]
-    # if user does not select file, browser also
+    # if user does not select file
     # submit a empty part without filename
     if file.filename == "":
         flash("No selected file", category="danger")
@@ -63,13 +65,12 @@ def upload_page():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
         flash("Image successfully uploaded", category="success")
-        return render_template('uploadfile.html', filename=filename) 
-    
+        return render_template("uploadfile.html", filename=filename)
 
-@app.route('/display/<filename>')
+
+@app.route("/display/<filename>")
 def display_image(filename):
-    return redirect(url_for('static', filename='uploads/' + filename), code=301)
-
+    return redirect(url_for("static", filename="uploads/" + filename), code=301)
 
 
 def allowed_file(filename):
@@ -84,16 +85,17 @@ def is_empty(data):
     for key, value in data.items():
         if key in ["solve-btn", "clear-btn"]:
             break
-        if value != "":
+        if value:
             return False
     return True
 
 
 def is_complete(data):
     for value in data.values():
-        if value == "":
+        if not value: 
             return False
     return True
+
 
 def solve(data):
     # if the data is empty
