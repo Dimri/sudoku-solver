@@ -40,7 +40,6 @@ def solution_page():
 
     # pressed 'clear'
     elif "clear-btn" in data:
-        print("clear button pressed")
         return redirect(url_for("home_page"))
 
 
@@ -92,7 +91,7 @@ def is_empty(data):
 
 def is_complete(data):
     for value in data.values():
-        if not value: 
+        if not value:
             return False
     return True
 
@@ -102,6 +101,7 @@ def solve(data):
     if is_empty(data):
         S = Sudoku(stringit(PUZZLE))
         S.solve()
+        flash(f"Solved!!", category="success")
         return render_template("solved.html", board=S.board, vals=S.solvals)
 
     # if data is not empty
