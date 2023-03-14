@@ -367,3 +367,58 @@ input[type="file"]::file-selector-button:hover {
   display: block;
   text-align: center;
 }
+
+/* HOME PAGE */
+.home-container {
+  text-align: center;
+  padding: 15px;
+}
+.left-div,
+.right-div {
+  display: inline-block;
+  border: solid 2px var(--nav-color);
+  max-width: 300px;
+  max-height: 600px;
+  text-align: left;
+  padding: 30px;
+  background-color: var(--nav-color);
+  border-radius: 3px;
+  margin: 15px;
+  vertical-align: top;
+}
+.left-text,
+.right-text {
+  font: 14px;
+  color: #fff;
+}
+@media screen and (max-width: 600px) {
+  .left-div,
+  .right-div {
+    max-width: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+.left-div:hover,
+.right-div:hover {
+  background-color: var(--bg-color);
+  border: solid 2px var(--nav-color);
+  transition: all 0.3s;
+}
+.left-div:hover a,
+.right-div:hover a {
+  color: var(--nav-color);
+  transition: all 0.3s;
+}

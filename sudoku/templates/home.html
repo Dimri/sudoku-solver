@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block title %} Home {% endblock %} {% block content
+%}
+<div class="home-container">
+  <div class="left-div left-text">
+    <a href="{{ url_for('play_page') }}">Play a game of sudoku </a>
+  </div>
+  <div class="right-div right-text">
+    <a href="{{ url_for('upload_page') }}">Upload image of sudoku </a>
+  </div>
+</div>
+{% endblock %}

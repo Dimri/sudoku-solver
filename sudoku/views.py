@@ -20,7 +20,11 @@ PUZZLE = puzzles.PUZZLES["2"]
 
 @app.route("/")
 def home_page():
-    # digit_matrix(app.config["UPLOAD_FOLDER"] + "s1.png")
+    return render_template("home.html", board=stringit(PUZZLE))
+
+
+@app.route("/play")
+def play_page():
     return render_template("index.html", board=stringit(PUZZLE))
 
 
