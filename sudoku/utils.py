@@ -8,16 +8,18 @@ from keras.models import load_model
 
 
 def prediction_model():
+    """load the trained model"""
     return load_model("sudoku/model/trained_model")
 
 
 def showimage(title, img):
+    """helper function to show image"""
     cv2.imshow(title, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
-def preProcess(img):
+def preprocess(img):
     # convert image to grayscale
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # apply gaussian blur
@@ -27,7 +29,8 @@ def preProcess(img):
     return imgThreshold
 
 
-def biggestContour(contours):
+def biggest_contour(contours):
+    """find biggest contour with 4 vertices from list of contours"""
     biggest = np.array([])
     max_area = 0
     for contour in contours:
@@ -48,6 +51,7 @@ def biggestContour(contours):
 
 
 def reorder(points):
+    """reorder points array as upper left, lower left, lower right, upper right"""
     # create a copy with zeros
     newpoints = np.zeros(points.shape, dtype=np.int32)
     # change shape (4,1,2) -> (4,2)

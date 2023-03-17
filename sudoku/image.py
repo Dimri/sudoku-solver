@@ -15,7 +15,7 @@ def prepare_image(IMAGE_PATH):
     img = cv2.imread(IMAGE_PATH)
     img = cv2.resize(img, (WIDTH_IMG, HEIGHT_IMG))
     imgBlank = np.zeros(img.shape, np.uint8)
-    imgThreshold = utils.preProcess(img)
+    imgThreshold = utils.preprocess(img)
     return img, imgBlank, imgThreshold
 
 
@@ -30,7 +30,7 @@ def find_contours(imgThreshold):
 
 def biggest_contour(contours, imgBigContour):
     """Find biggest contours and use it as sudoku"""
-    biggest, _ = utils.biggestContour(contours)
+    biggest, _ = utils.biggest_contour(contours)
     # reorder points
     biggest = utils.reorder(biggest)
     # draw contour
