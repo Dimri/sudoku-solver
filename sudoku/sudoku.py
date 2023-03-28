@@ -1,4 +1,5 @@
 import re
+from copy import deepcopy
 
 NROWS = 9
 
@@ -15,6 +16,7 @@ class Sudoku:
         self.addvals = set()
         if self.valid_board(board):
             self.board = board
+            self.orig_board = deepcopy(board)
         else:
             raise InvalidInputError(f"Given input is not a valid input!")
 

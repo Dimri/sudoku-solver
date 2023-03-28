@@ -416,9 +416,5 @@ a:hover {
   background-color: var(--bg-color);
   border: solid 2px var(--nav-color);
   transition: all 0.3s;
-}
-.left-div:hover a,
-.right-div:hover a {
   color: var(--nav-color);
-  transition: all 0.3s;
 }

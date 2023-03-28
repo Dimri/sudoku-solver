@@ -3,7 +3,7 @@ content %}
 <div class="game-container center">
   <div class="grid-container">
     <form
-      action="{{ url_for('solution_page') }}"
+      action="{{ url_for('solution_page', board=board) }}"
       method="post"
       name="sudoku-input"
     >
@@ -56,7 +56,8 @@ content %}
 
         {% endfor %}
       </table>
-      {% include 'buttons.html' %}
+      {% if is_solved %} {% include 'buttons1.html' %} {% else %} {% include
+      'buttons2.html' %} {% endif %}
     </form>
   </div>
 </div>
