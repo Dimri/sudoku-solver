@@ -103,12 +103,15 @@ def get_prediction(boxes, model):
         img = img[4 : img.shape[0] - 4, 4 : img.shape[1] - 4]
         img = cv2.resize(img, (28, 28))
         # make image black and white
-        # img = cv2.bitwise_not(img)
+        img = cv2.bitwise_not(img)
+        # increase the contract and brightness
+        img = cv2.convertScaleAbs(img, alpha=1.5, beta=5)
+        # normalize
         img = img / 255
+        # reshape it to the size that the model accepts
         img = img.reshape(1, 28, 28, 1)
 
         # predict the digit
-        # predictions = model.predict(img, verbose=0)
         predictions = model.predict(img)
         class_index = np.argmax(predictions)  # digit
         prob_val = np.amax(predictions)  # probability value
