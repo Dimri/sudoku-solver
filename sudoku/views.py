@@ -89,6 +89,7 @@ def solve(data, board):
 
 
 main_puzzle = Sudoku(stringit(puzzles.puzzles_dict["1"]))
+upload_puzzle = ""
 last_visited_page = 0  # 1 = upload page, 0 = otherwise
 
 
@@ -113,6 +114,8 @@ def play_page(show_puzzle=None):
 def puzzle_page(filename):
     puzzle_from_image = stringit(digit_matrix(app.config["UPLOAD_FOLDER"] + filename))
     puzzle = Sudoku(puzzle_from_image)
+    global upload_puzzle
+    upload_puzzle = puzzle
     return render_template("index.html", board=puzzle.orig_board, filename=filename)
 
 
@@ -123,11 +126,10 @@ def solution_page(board):
     # pressed 'solve'
     if "solve-btn" in data:
         return solve(data, board)
-
     # pressed 'clear'
     elif "clear-btn" in data:
         if last_visited_page == 1:
-            return redirect(url_for("play_page", show_puzzle=board))
+            return redirect(url_for("play_page", show_puzzle=upload_puzzle.orig_board))
         else:
             return redirect(url_for("play_page"))
 
